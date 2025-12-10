@@ -1,0 +1,27 @@
+package com.joaobarboza.orderservice.core.consumer;
+
+import com.joaobarboza.orderservice.core.service.EventService;
+import com.joaobarboza.orderservice.core.utils.JsonUtil;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Component
+@AllArgsConstructor
+public class EventConsumer {
+
+    private final JsonUtil jsonUtil;
+    private final EventService eventService;
+
+    @KafkaListener(
+            groupId = "${spring.kafka.consumer.group-id}",
+            topics = "${spring.kafka.topic.notify-ending}"
+    )
+    public void consumerNotifyEndingEvent(String payload) {
+        log.info("Receiving ending notification from notify-ending, payload:{}", payload);
+        var event = jsonUtil.toEvent(payload);
+        eventService.notifyEnding(event);
+    }
+}
