@@ -1,6 +1,6 @@
 package com.joaobarboza.orderservice.core.dto;
 
-import com.joaobarboza.orderservice.core.document.OrderProducts;
+import com.joaobarboza.orderservice.core.repository.mongo.document.OrderProducts;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

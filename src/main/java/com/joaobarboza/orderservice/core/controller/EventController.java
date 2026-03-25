@@ -1,6 +1,6 @@
 package com.joaobarboza.orderservice.core.controller;
 
-import com.joaobarboza.orderservice.core.document.Event;
+import com.joaobarboza.orderservice.core.repository.mongo.document.Event;
 import com.joaobarboza.orderservice.core.dto.EventFilters;
 import com.joaobarboza.orderservice.core.service.EventService;
 import lombok.AllArgsConstructor;

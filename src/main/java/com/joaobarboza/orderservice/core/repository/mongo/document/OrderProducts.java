@@ -1,4 +1,4 @@
-package com.joaobarboza.orderservice.core.document;
+package com.joaobarboza.orderservice.core.repository.mongo.document;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

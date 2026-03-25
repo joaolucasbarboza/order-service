@@ -1,38 +1,64 @@
 package com.joaobarboza.orderservice.core.service;
 
-import com.joaobarboza.orderservice.core.document.Event;
-import com.joaobarboza.orderservice.core.document.Order;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.joaobarboza.orderservice.config.exception.ValidationException;
+import com.joaobarboza.orderservice.core.EStatusEvent;
+import com.joaobarboza.orderservice.core.repository.mongo.document.Event;
+import com.joaobarboza.orderservice.core.repository.mongo.document.Order;
 import com.joaobarboza.orderservice.core.dto.OrderRequest;
-import com.joaobarboza.orderservice.core.producer.SagaProducer;
-import com.joaobarboza.orderservice.core.repository.OrderRepository;
+import com.joaobarboza.orderservice.core.repository.mongo.OrderRepository;
+import com.joaobarboza.orderservice.core.repository.postgres.OutboxRepository;
+import com.joaobarboza.orderservice.core.repository.postgres.entity.EventEntity;
 import com.joaobarboza.orderservice.core.utils.JsonUtil;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrderService {
 
     private static final String TRANSACTION_ID_PATTERN = "%s_%s";
 
+    @Value("${spring.kafka.topic.start-saga}")
+    private String startSagaTopic;
+
     private final EventService eventService;
-    private final SagaProducer sagaProducer;
     private final JsonUtil jsonUtil;
     private final OrderRepository orderRepository;
+    private final OutboxRepository outboxRepository;
 
+    @Transactional
     public Order createOrder(OrderRequest orderRequest) {
         Order order = Order.builder()
                 .products(orderRequest.getProducts())
                 .transactionId(
-                        String.format(TRANSACTION_ID_PATTERN, Instant.now().toEpochMilli(), UUID.randomUUID())
+                        String.format(TRANSACTION_ID_PATTERN,
+                                Instant.now().toEpochMilli(),
+                                UUID.randomUUID())
                 )
                 .build();
-        orderRepository.save(order);
-        sagaProducer.sendEvent(jsonUtil.toJson(createPayload(order)));
 
+        try {
+            JsonNode jsonNode = new ObjectMapper()
+                    .readTree(jsonUtil.toJson(createPayload(order)));
+
+            EventEntity entity = EventEntity.builder()
+                    .topic(startSagaTopic)
+                    .payload(jsonNode)
+                    .status(EStatusEvent.PENDING)
+                    .build();
+
+            orderRepository.save(order);
+            outboxRepository.save(entity);
+        } catch (Exception e) {
+            throw new ValidationException(e.getMessage());
+        }
         return order;
     }
 

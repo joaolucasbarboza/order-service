@@ -1,6 +1,6 @@
 package com.joaobarboza.orderservice.core.controller;
 
-import com.joaobarboza.orderservice.core.document.Order;
+import com.joaobarboza.orderservice.core.repository.mongo.document.Order;
 import com.joaobarboza.orderservice.core.dto.OrderRequest;
 import com.joaobarboza.orderservice.core.service.OrderService;
 import lombok.AllArgsConstructor;
