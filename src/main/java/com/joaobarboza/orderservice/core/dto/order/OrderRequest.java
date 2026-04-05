@@ -1,4 +1,4 @@
-package com.joaobarboza.orderservice.core.dto;
+package com.joaobarboza.orderservice.core.dto.order;
 
 import com.joaobarboza.orderservice.core.repository.mongo.document.OrderProducts;
 import lombok.AllArgsConstructor;

@@ -3,7 +3,7 @@ package com.joaobarboza.orderservice.core.service;
 import com.joaobarboza.orderservice.config.exception.ValidationException;
 import com.joaobarboza.orderservice.core.repository.mongo.document.Event;
 import com.joaobarboza.orderservice.core.dto.EventFilters;
-import com.joaobarboza.orderservice.core.repository.mongo.EventRepository;
+import com.joaobarboza.orderservice.core.repository.mongo.repository.EventRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

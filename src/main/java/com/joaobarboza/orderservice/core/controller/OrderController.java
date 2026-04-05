@@ -1,7 +1,7 @@
 package com.joaobarboza.orderservice.core.controller;
 
-import com.joaobarboza.orderservice.core.repository.mongo.document.Order;
-import com.joaobarboza.orderservice.core.dto.OrderRequest;
+import com.joaobarboza.orderservice.core.dto.order.OrderResponse;
+import com.joaobarboza.orderservice.core.dto.order.OrderRequest;
 import com.joaobarboza.orderservice.core.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public Order createOrder(@RequestBody OrderRequest orderRequest) {
+    public OrderResponse createOrder(@RequestBody OrderRequest orderRequest) {
         return orderService.createOrder(orderRequest);
     }
 }

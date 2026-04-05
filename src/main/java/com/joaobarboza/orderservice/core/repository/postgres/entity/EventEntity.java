@@ -18,6 +18,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Builder
 @Getter
 @Setter
+
+// todo: renomear para OutboxEventEntity
 public class EventEntity {
 
     @Id
