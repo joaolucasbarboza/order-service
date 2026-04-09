@@ -14,6 +14,7 @@ import com.joaobarboza.orderservice.core.repository.postgres.entity.EventEntity;
 import com.joaobarboza.orderservice.core.repository.postgres.repository.OutboxRepository;
 import com.joaobarboza.orderservice.core.utils.JsonUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -48,9 +50,10 @@ public class OrderService {
                     .readTree(jsonUtil.toJson(event));
 
             EventEntity entity = buildEventEntity(jsonNode);
-
             orderRepository.save(order);
             outboxRepository.save(entity);
+
+            log.info("Order created, orderId:{}, targetTopic:{}", order.getId(), entity.getTopic());
         } catch (Exception e) {
             throw new ValidationException(e.getMessage());
         }
