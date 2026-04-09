@@ -9,6 +9,7 @@ public record OrderResponse(
         String id,
         List<OrderProducts> products,
         LocalDateTime createdAt,
+        LocalDateTime updatedAt,
         String transactionId,
         double totalAmount,
         Integer totalItems

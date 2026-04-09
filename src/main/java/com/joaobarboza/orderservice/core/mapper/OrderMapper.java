@@ -12,6 +12,7 @@ public class OrderMapper {
                 document.getId(),
                 document.getProducts(),
                 document.getCreatedAt(),
+                document.getUpdatedAt(),
                 document.getTransactionId(),
                 document.getTotalAmount(),
                 document.getTotalItems()
