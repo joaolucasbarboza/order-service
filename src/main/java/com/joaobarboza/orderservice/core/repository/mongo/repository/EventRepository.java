@@ -1,6 +1,6 @@
-package com.joaobarboza.orderservice.core.repository;
+package com.joaobarboza.orderservice.core.repository.mongo.repository;
 
-import com.joaobarboza.orderservice.core.document.Event;
+import com.joaobarboza.orderservice.core.repository.mongo.document.Event;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

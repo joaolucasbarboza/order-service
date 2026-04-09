@@ -1,7 +1,7 @@
 package com.joaobarboza.orderservice.core.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.joaobarboza.orderservice.core.document.Event;
+import com.joaobarboza.orderservice.core.repository.mongo.document.Event;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
